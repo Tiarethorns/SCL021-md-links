@@ -8,7 +8,7 @@ const fs = require("fs");
 const basename = path.basename;
 const parse = path.parse;*/
 
-//verifica si la ruta es absoluta o relativa y en este caso la transforma
+//comprobar que la ruta sea absoluta y si no, transformarla
 const fixPath = (route) => {
   let pathIsAbsolute = path.isAbsolute(route);
 
@@ -27,13 +27,17 @@ console.log(fixPath("README.md"));
 // instance into variable named stats
 
 const DirOrFile = (route) => {
-  var stats = fs.statSync("README.md");
+  let stats = fs.statSync("README.md");
   console.log("is file ? " + stats.isFile());
   return stats.isFile();
 };
 DirOrFile();
-// Use isDirectory() method to log the result to screen
+
 //console.log("is directory ? " + stats.isDirectory());
 
-// Verifica si la extensión del archivo es .md
-const Extension = console.log("La extension es" + path.extname("README.md"));
+// comprobar la extension del rchivo
+const extension = (route) => {
+  console.log("La extension es" + path.extname("README.md"));
+  return path.extname("README.md");
+};
+extension();
