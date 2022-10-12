@@ -4,6 +4,8 @@
 const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
+const linkDetect =
+  /(([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$)/gi;
 /*const args = process.argv;
 const basename = path.basename;
 const parse = path.parse;*/
@@ -22,9 +24,6 @@ const fixPath = (route) => {
 console.log("la ruta absoluta es " + fixPath("README.md"));
 
 // Verifica si la ruta es un archivo, si es un directorio retorna false
-// Use statSync() method to store the returned
-// instance into variable named stats
-
 const isFile = (route) => {
   let stats = fs.statSync("README.md");
   console.log("Es un archivo ? " + stats.isFile());
@@ -38,25 +37,23 @@ const extension = (route) => {
 };
 extension();
 
-//mostrar los archivos de un directorio
-let foundFiles = [];
+//archivos de un directorio
 let filenames = fs.readdirSync("C:\\Users\\dizzy\\SCL021-cipher");
 console.log("Archivos en la carpeta:");
 console.log(filenames);
 
-/*for (i = 0; i < filenames.length; i++) {
-  
-  filenames.push(foundFiles);
-}
-console.log(foundFiles);*/
-
-filenames.forEach((file) => {
-  foundFiles.push(file);
-  //console.log("File:", file);
-  console.log(foundFiles);
-});
 // filtrar solo los que tengan extension .md
 const filterExtension = filenames.filter(
   (file) => path.extname(file) === ".md"
 );
 console.log(filterExtension);
+console.log(filterExtension.length);
+
+// leer los archivos
+const readFile = fs.readFile("README.md", "utf8", (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(data);
+});
