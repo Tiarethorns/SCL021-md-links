@@ -4,8 +4,9 @@
 const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
+const url = require("url");
 const linkDetect =
-  /(([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$)/gi;
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 /*const args = process.argv;
 const basename = path.basename;
 const parse = path.parse;*/
@@ -50,10 +51,21 @@ console.log(filterExtension);
 console.log(filterExtension.length);
 
 // leer los archivos
+
 const readFile = fs.readFile("README.md", "utf8", (err, data) => {
   if (err) {
     console.error(err);
     return;
   }
   console.log(data);
+  const links = [];
+  if (data.match(linkDetect) === null) {
+    console.log("no hay archivos");
+  } else if (data) {
+    data.match(linkDetect).forEach((link) => {
+      links.push(link);
+    });
+    //resolve(links);
+    console.log(links);
+  }
 });
