@@ -51,21 +51,34 @@ console.log(filterExtension);
 console.log(filterExtension.length);
 
 // leer los archivos
-
-const readFile = fs.readFile("README.md", "utf8", (err, data) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log(data);
-  const links = [];
-  if (data.match(linkDetect) === null) {
-    console.log("no hay archivos");
-  } else if (data) {
-    data.match(linkDetect).forEach((link) => {
-      links.push(link);
-    });
-    //resolve(links);
-    console.log(links);
-  }
-});
+const readFile = (route) => {
+  return new Promise(
+    (resolve, reject) => {},
+    fs.readFile("README.md", "utf8", (err, data) => {
+      const links = []; //transformar a promesa asincrona
+      if (err) {
+        reject(err);
+      } else if (data.match(linkDetect) === null) {
+        reject("no hay links en el archivo");
+      } else if (data) {
+        data.match(linkDetect).forEach((link) => {
+          links.push(link);
+        });
+        resolve(links);
+        console.log(links);
+        console.log(data.match(linkDetect));
+      }
+    })
+  );
+};
+//contador de links
+/*const LinkCount = (route) => {
+  let count = 0;
+  route.forEach((link, index) => {
+    if (route.indexOf(link) === index) {
+      count++;
+    }
+  });
+  console.log("esto si funciona");
+  return count;
+};*/
