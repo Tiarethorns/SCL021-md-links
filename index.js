@@ -5,6 +5,7 @@ const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
 const url = require("url");
+const { count } = require("console");
 const linkDetect =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 /*const args = process.argv;
@@ -52,33 +53,23 @@ console.log(filterExtension.length);
 
 // leer los archivos
 const readFile = (route) => {
-  return new Promise(
-    (resolve, reject) => {},
+  return new Promise((resolve, reject) => {
+    const datalink = [];
     fs.readFile("README.md", "utf8", (err, data) => {
-      const links = []; //transformar a promesa asincrona
       if (err) {
         reject(err);
       } else if (data.match(linkDetect) === null) {
-        reject("no hay links en el archivo");
+        reject(console.log("no hay links"));
       } else if (data) {
         data.match(linkDetect).forEach((link) => {
-          links.push(link);
+          datalink.push(link);
         });
-        resolve(links);
-        console.log(links);
-        console.log(data.match(linkDetect));
+        resolve(datalink);
+        //console.log(links);
       }
-    })
-  );
-};
-//contador de links
-/*const LinkCount = (route) => {
-  let count = 0;
-  route.forEach((link, index) => {
-    if (route.indexOf(link) === index) {
-      count++;
-    }
+    });
   });
-  console.log("esto si funciona");
-  return count;
-};*/
+};
+readFile().then((data) => console.log(data));
+console.log(readFile("README.md"));
+
