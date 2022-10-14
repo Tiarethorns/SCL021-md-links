@@ -4,13 +4,13 @@
 const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
-const url = require("url");
+const https = require("https");
 const { count } = require("console");
 const linkDetect =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
-/*const args = process.argv;
+const args = process.argv;
 const basename = path.basename;
-const parse = path.parse;*/
+const parse = path.parse;
 
 //comprobar que la ruta sea absoluta y si no, transformarla
 const fixPath = (route) => {
@@ -51,25 +51,37 @@ const filterExtension = filenames.filter(
 console.log(filterExtension);
 console.log(filterExtension.length);
 
+function detectURLs(message) {
+  var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+  return message.match(urlRegex);
+}
 // leer los archivos
 const readFile = (route) => {
   return new Promise((resolve, reject) => {
     const datalink = [];
     fs.readFile("README.md", "utf8", (err, data) => {
+      console.log("lenyendo archivo", typeof data);
       if (err) {
         reject(err);
       } else if (data.match(linkDetect) === null) {
         reject(console.log("no hay links"));
       } else if (data) {
+        const urlsDetected = detectURLs(data);
+        console.log("urls detected", urlsDetected);
+        //console.log("revisando linkDetect", data.match(linkDetect));
         data.match(linkDetect).forEach((link) => {
           datalink.push(link);
         });
-        resolve(datalink);
+        resolve(urlsDetected);
         //console.log(links);
       }
     });
   });
 };
-readFile().then((data) => console.log(data));
-console.log(readFile("README.md"));
-
+readFile().then((data) => console.log(data.length));
+//console.log(readFile("README.md"));
+//links funcionales fetch
+//npm install node-fetch
+//const fetch = require("node-fetch")
+//import fetch from "node-fetch";
+//.map transformar arreglo de url a arreglo de promesas
