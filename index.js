@@ -5,12 +5,7 @@ const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
-const { count } = require("console");
-const linkDetect =
-  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
-const args = process.argv;
-const basename = path.basename;
-const parse = path.parse;
+//const fetch = require("node-fetch");
 
 //comprobar que la ruta sea absoluta y si no, transformarla
 const fixPath = (route) => {
@@ -58,30 +53,49 @@ function detectURLs(message) {
 // leer los archivos
 const readFile = (route) => {
   return new Promise((resolve, reject) => {
-    const datalink = [];
     fs.readFile("README.md", "utf8", (err, data) => {
       console.log("lenyendo archivo", typeof data);
       if (err) {
         reject(err);
-      } else if (data.match(linkDetect) === null) {
-        reject(console.log("no hay links"));
       } else if (data) {
         const urlsDetected = detectURLs(data);
         console.log("urls detected", urlsDetected);
-        //console.log("revisando linkDetect", data.match(linkDetect));
-        data.match(linkDetect).forEach((link) => {
-          datalink.push(link);
-        });
         resolve(urlsDetected);
-        //console.log(links);
       }
     });
   });
 };
 readFile().then((data) => console.log(data.length));
-//console.log(readFile("README.md"));
 //links funcionales fetch
 //npm install node-fetch
-//const fetch = require("node-fetch")
+
 //import fetch from "node-fetch";
 //.map transformar arreglo de url a arreglo de promesas
+
+https.get("https://bluuweb.github.io/javascript/02-dom/", (res) => {
+  //https.get(url[, options][, callback])
+  if (res.statusCode === 200) {
+    return console.log(
+      "statusCode:",
+      res.statusCode,
+      "status Message:",
+      res.statusMessage
+    );
+  } else {
+    return console.log(
+      "statusCode:",
+      res.statusCode,
+      "status Message:",
+      res.statusMessage
+    );
+  }
+
+  /*console.log("headers:", res.headers);
+
+  res.on("data", (d) => {
+      process.stdout.write(d);
+    });
+  })
+  .on("error", (e) => {
+    console.error(e);*/
+});
