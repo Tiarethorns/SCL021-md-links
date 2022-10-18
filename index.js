@@ -6,6 +6,8 @@ const path = require("path");
 const fs = require("fs");
 const https = require("https");
 //const fetch = require("node-fetch");
+const [p1, p2, pathFile, ...args] = process.argv;
+console.log({ pathFile, args });
 
 //comprobar que la ruta sea absoluta y si no, transformarla
 const fixPath = (route) => {
@@ -66,10 +68,6 @@ const readFile = (route) => {
   });
 };
 readFile().then((data) => console.log(data.length));
-//links funcionales fetch
-//npm install node-fetch
-
-//import fetch from "node-fetch";
 //.map transformar arreglo de url a arreglo de promesas
 
 https.get("https://bluuweb.github.io/javascript/02-dom/", (res) => {
@@ -89,13 +87,6 @@ https.get("https://bluuweb.github.io/javascript/02-dom/", (res) => {
       res.statusMessage
     );
   }
-
-  /*console.log("headers:", res.headers);
-
-  res.on("data", (d) => {
-      process.stdout.write(d);
-    });
-  })
-  .on("error", (e) => {
-    console.error(e);*/
 });
+
+//usar includes para trabajar con validate y stats
