@@ -8,6 +8,8 @@
     "mdlinks": "./index.js"
   },
   "dependencies": {
+    "chalk": "^5.1.2",
+    "colors": "^1.4.0",
     "node-fetch": "^3.2.10"
   }
 }
