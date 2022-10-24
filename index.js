@@ -5,38 +5,28 @@ const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
+const { get } = require("http");
 const [p1, p2, pathFile, ...args] = process.argv;
-//console.log({ pathFile, args });
 
 //comprobar que la ruta sea absoluta y si no, transformarla
 const fixPath = (route) => {
-  let pathIsAbsolute = path.isAbsolute(pathFile);
+  const pathIsAbsolute = path.isAbsolute(route);
   if (pathIsAbsolute === false) {
-    let fixedPath = path.resolve(pathFile);
-    return fixedPath;
-  } else {
-    return console.log("la ruta ya es absoluta");
+    return path.resolve(route);
   }
+  return route;
 };
-console.log("la ruta absoluta es " + fixPath(pathFile));
 
 const isFile = (route) => {
   let stats = fs.statSync(pathFile);
+  console.log("es un archivo? " + stats.isFile());
   return stats.isFile();
 };
-isFile();
 
-const isValid = (route) => {
-  let isMD = path.extname(pathFile);
-  console.log(isMD);
-  if (isFile(pathFile) === true && isMD === ".md") {
-    console.log("el archivo es válido");
-  } else {
-    return console.log("Debes inspeccionar un archivo tipo Markdown");
-  }
+const extension = (route) => {
+  console.log("La extension es" + path.extname(pathFile));
+  return path.extname(pathFile);
 };
-isValid();
-//corroborar si el archivo contiene links
 
 function detectURLs(message) {
   var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
@@ -58,4 +48,27 @@ const readFile = (route) => {
     });
   });
 };
+readFile().then((data) => console.log(data));
 readFile().then((data) => console.log(data.length));
+
+
+
+/**
+ * the description of the function
+ * @param {string} pathFile:¨the path file to look for all the links in md files
+ * @param {object} options
+ * @return {promise}:
+ */
+/*const mdLinks = (pathFile, options) => {
+  return new Promise((resolve, reject) => {
+    //recorrer array de links, buscar http de cada link, devolver comoabajo
+    //console.log(isFile);
+    if (validate) {
+      resolve([{ href, title, status }]);
+    } else {
+      resolve([{ href, title }]);
+    }
+  });
+};
+
+mdLinks("./README.md");*/
