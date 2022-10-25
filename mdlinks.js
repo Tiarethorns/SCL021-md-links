@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { fixPath, isFile, extension, readFile } = require(index.js);
+const { fixPath, isFile, extension, readFile } = require("./index");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
@@ -11,6 +11,5 @@ const mdLinks = (route, options) => {
   if (pathIsAbsolute === false) {
     fixPath(pathFile);
   } else {
-      
   }
 };

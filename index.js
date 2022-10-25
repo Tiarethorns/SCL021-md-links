@@ -5,28 +5,21 @@ const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
-const { get } = require("http");
+const fetch = require("node-fetch");
 const [p1, p2, pathFile, ...args] = process.argv;
 
 //comprobar que la ruta sea absoluta y si no, transformarla
+
 const fixPath = (route) => {
-  const pathIsAbsolute = path.isAbsolute(route);
+  const pathIsAbsolute = path.isAbsolute(pathFile);
   if (pathIsAbsolute === false) {
-    return path.resolve(route);
+    return path.resolve(pathFile);
   }
   return route;
 };
+console.log("La ruta absoluta del archivo es " + path.resolve(pathFile));
 
-const isFile = (route) => {
-  let stats = fs.statSync(pathFile);
-  console.log("es un archivo? " + stats.isFile());
-  return stats.isFile();
-};
-
-const extension = (route) => {
-  console.log("La extension es" + path.extname(pathFile));
-  return path.extname(pathFile);
-};
+//verificar si la ruta es un archivo
 
 function detectURLs(message) {
   var urlRegex =
@@ -54,9 +47,17 @@ const readFile = (route) => {
 
 readFile().then((urlsDetected) =>
   urlsDetected.map((link) => {
+    //console.log({ link });
     return new Promise((resolve, reject) => {
       try {
-        https.get(urlsDetected, (link) => {
+        fetch(link)
+          .then((respuesta) => {
+            console.log(respuesta);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        /* https.get(link, (res) => {
           if (res.statusCode === 200) {
             resolve({
               source: process.argv[2],
@@ -72,17 +73,10 @@ readFile().then((urlsDetected) =>
               message: "FAIL",
             });
           }
-        });
+        });*/
       } catch (error) {
         console.log({ error });
       }
     });
   })
 );
-
-/**
- * the description of the function
- * @param {string} pathFile:¨the path file to look for all the links in md files
- * @param {object} options
- * @return {promise}:
- */ module.exports = { fixPath, isFile, extension, readFile };
