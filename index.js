@@ -29,7 +29,9 @@ const extension = (route) => {
 };
 
 function detectURLs(message) {
-  var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+  var urlRegex =
+    /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/gim;
+
   return message.match(urlRegex);
 }
 
@@ -48,27 +50,39 @@ const readFile = (route) => {
     });
   });
 };
-readFile().then((data) => console.log(data));
-readFile().then((data) => console.log(data.length));
+//readFile().then((data) => console.log(data.length));
 
-
+readFile().then((urlsDetected) =>
+  urlsDetected.map((link) => {
+    return new Promise((resolve, reject) => {
+      try {
+        https.get(urlsDetected, (link) => {
+          if (res.statusCode === 200) {
+            resolve({
+              source: process.argv[2],
+              link: link,
+              code: res.statusCode,
+              message: "OK",
+            });
+          } else {
+            reject({
+              source: process.argv[2],
+              link: link,
+              code: res.statusCode,
+              message: "FAIL",
+            });
+          }
+        });
+      } catch (error) {
+        console.log({ error });
+      }
+    });
+  })
+);
 
 /**
  * the description of the function
  * @param {string} pathFile:¨the path file to look for all the links in md files
  * @param {object} options
  * @return {promise}:
- */
-/*const mdLinks = (pathFile, options) => {
-  return new Promise((resolve, reject) => {
-    //recorrer array de links, buscar http de cada link, devolver comoabajo
-    //console.log(isFile);
-    if (validate) {
-      resolve([{ href, title, status }]);
-    } else {
-      resolve([{ href, title }]);
-    }
-  });
-};
-
-mdLinks("./README.md");*/
+ */ module.exports = { fixPath, isFile, extension, readFile };
