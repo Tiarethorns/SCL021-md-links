@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const { resolve, isAbsolute } = require("path");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
 const fetch = require("node-fetch");
 const [p1, p2, pathFile, ...args] = process.argv;
+const colors = require("colors");
 
 //ruta absoluta o relativa
 var absolutePath = path.resolve(pathFile);
@@ -30,13 +30,12 @@ function detectURLs(message) {
 const readFile = () => {
   return new Promise((resolve, reject) => {
     fs.readFile(pathFile, "utf8", (err, data) => {
-      console.log("leyendo archivo tipo", typeof data);
+      console.log("Leyendo el archivo...🤖".bold.red);
       if (err) {
         return console.log("El archivo no es válido");
         reject(err);
       } else if (data) {
         const urlsDetected = detectURLs(data);
-        console.log("urls detected", urlsDetected);
         resolve(urlsDetected);
       }
     });
