@@ -1,13 +1,30 @@
 {
-  "name": "md-links",
-  "version": "0.1.0",
-  "engines": {
-    "node": ">=16.x"
-  },
-  "bin": {
-    "mdlinks": "./index.js"
+  "name": "scl021-md-links",
+  "version": "1.0.0",
+  "description": "Libreria en desarrollo para analizar stuatus de links dentro de un archivo extensión .md",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
   },
   "dependencies": {
-    "node-fetch": "^2.6.7"
-  }
+    "tr46": "^0.0.3",
+    "node-fetch": "^2.6.7",
+    "webidl-conversions": "^3.0.1",
+    "whatwg-url": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tiarethorns/SCL021-md-links.git"
+  },
+  "keywords": [".md", "links", "https"],
+  "author": "Tiare Espinoza A.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tiarethorns/SCL021-md-links/issues"
+  },
+  "homepage": "https://github.com/Tiarethorns/SCL021-md-links#readme"
 }

@@ -6,12 +6,6 @@ const fs = require("fs");
 const https = require("https");
 const fetch = require("node-fetch");
 const [p1, p2, pathFile, ...args] = process.argv;
-const colors = require("colors");
-
-colors.setTheme({
-  urls: "bgGren",
-  obj: "grey",
-});
 
 //ruta absoluta o relativa
 var absolutePath = path.resolve(pathFile);
